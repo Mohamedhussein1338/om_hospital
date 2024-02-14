@@ -1,0 +1,225 @@
+<odoo>
+
+    <record id="open_patient_appointments" model="ir.actions.act_window">
+        <field name="name">Appointments</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.appointment</field>
+        <!--        <field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('patient_id','=',active_id)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your First Appointment !
+            </p>
+        </field>
+
+    </record>
+
+
+    <record model="ir.ui.view" id="view_patient">
+        <field name="name">patient.graph</field>
+        <field name="model">hospital.pationt</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="Patient" type="line">
+                <field name="address"/>
+                <field name="name" operator="*"/>
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="patient_pivot_view" model="ir.ui.view">
+        <field name="name">patient.view.pivot.lead</field>
+        <field name="model">hospital.pationt</field>
+        <field name="priority">60</field>
+        <field name="arch" type="xml">
+            <pivot string="hospital.patient Analysis" sample="1">
+                <field name="name" interval="month" type="row"/>
+                <field name="address" type="col"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="hospital_tree_view" model="ir.ui.view">
+        <field name="name">hospital.pationt.tree.view</field>
+        <field name="model">hospital.pationt</field>
+        <field name="arch" type="xml">
+            <tree>
+
+                <field name="name" string="Patient Name"/>
+                <field name="age" string="Patient Age" avg="Average Age"/>
+                <field name="address" string="Patient Address"/>
+                <field name="gender" string="Patient Gender"/>
+                <field name="reference" string="The Reference"/>
+                <field name="birth_date" optional="show"/>
+                <field name="active" optional="show"/>
+            </tree>
+
+        </field>
+    </record>
+
+    <record id="hospital_search" model="ir.ui.view">
+        <field name="name">hospital.pationt.search</field>
+        <field name="model">hospital.pationt</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Patient Name"/>
+                <field name="age" string="Patient Age"/>
+                <field name="address" string="Patient Address"/>
+                <filter name="female_filter" string="feMale" domain="[('gender','=','f')]"/>
+                <filter name="male_filter" string="male" domain="[('gender','=','m')]"/>
+                <!--                <filter name="kids" string="Kids" domain="[('age','&lt;=','5')]"/>-->
+                <searchpanel>
+                    <field name="gender" icon="fa-users" select="multi" enable_counters="1"/>
+                    <!--                    <field name="department_id" icon="fa-users" enable_counters="1"/>-->
+                </searchpanel>
+            </search>
+
+        </field>
+    </record>
+
+
+    <record id="hospital_form_view" model="ir.ui.view">
+        <field name="name">hospital.pationt.form.view</field>
+        <field name="model">hospital.pationt</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="open_patient_appointment" class="oe_stat_button" type="object"
+                                icon="fa-calendar">
+                            <field string="Appointments" name="appointment_count" widget="statinfo"/>
+                        </button>
+                        <button name="%(om_hospital.open_patient_appointments)d" class="oe_stat_button" type="action"
+                                icon="fa-star">
+                            <field string="Appointments" name="appointment_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <div class="oe_edit_only">
+                            <label for="name"/>
+                        </div>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <!--                        <field name="active" invisible="1"/>-->
+                    </div>
+                    <group>
+                        <group string="basic information">
+                            <field name="name"/>
+                            <field name="original_hr_employee_id"/>
+                            <field name="birth_date"/>
+                            <field name="age"/>
+                            <field name="company_id"/>
+                            <field name="user_id"/>
+                            <field name="address"/>
+                            <field name="reference"/>
+                            <field name="gender" widget="radio" invisible="context.get('hide_gender')"/>
+                        </group>
+                        <group string="other information">
+                            <field name="accepted"/>
+                            <field name="level"/>
+                            <field name="image"/>
+                            <field name="job_title"/>
+                            <field name="category_ids"/>
+                            <field name="work_email"/>
+                            <field name="work_phone"/>
+                            <field name="cv"/>
+                            <field name="login_time"/>
+                            <button name="orm_methods" string="Orm _ methods" type="object" class="oe_highlight"
+                                    help="a massage help to print search method"/>
+                        </group>
+                        <notebook>
+
+                            <page string="patient Notes">
+                                <group>
+                                    <field name="name" string="Patient Name"/>
+                                    <field name="age" attrs="{ 'invisible': [('gender', '=', 'f')] }"/>
+                                    <field name="gender"/>
+                                </group>
+                            </page>
+                            <page string="Pharmacy">
+                                <field name="pharmacy_id">
+                                    <tree>
+                                        <field name="product_id"/>
+                                        <field name="price"/>
+                                        <field name="qty"/>
+                                        <field name="total_price" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"/>
+                                        <field name="currency_id"/>
+                                        <field name="appointment_id"/>
+                                        <field name="doctors_id"/>
+                                        <field name="reference_record"/>
+
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="price"/>
+                                            <field name="qty"/>
+                                            <field name="total_price" widget="monetary"
+                                                   options="{'currency_field': 'currency_id'}"/>
+                                            <field name="currency_id"/>
+                                            <field name="appointment_id"/>
+                                            <field name="doctors_id" widget="many2many_checkboxes"/>
+                                            <field name="reference_record"/>
+
+                                        </group>
+
+                                    </form>
+                                </field>
+
+                            </page>
+
+                        </notebook>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+
+        </field>
+    </record>
+    <record id="hospital_action_id" model="ir.actions.act_window">
+        <field name="name">Hospital Patient</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.pationt</field>
+        <field name="view_mode">tree,form,graph,pivot,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                create First patient!
+            </p>
+        </field>
+
+    </record>
+
+    <record id="hospital_action_female_id" model="ir.actions.act_window">
+        <field name="name">Hospital Female Patient</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.pationt</field>
+        <field name="context">{'default_gender':'f' ,'hide_gender':1}</field>
+        <field name="domain">[('gender','=','f')]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                create First female patient!
+            </p>
+        </field>
+
+    </record>
+
+
+    <menuitem id="hospital_menu_id" name="Hospital" sequence='0'/>
+    <menuitem id="hospital_patient_id" name="Patient Details" sequence='0' parent="hospital_menu_id"/>
+    <menuitem id="hospital_appointment_id" name="The Appointment" parent="hospital_menu_id"/>
+
+
+    <menuitem id="hospital_details_id" name="Patient" sequence='0' parent="hospital_patient_id"
+              action="hospital_action_id"/>
+    <menuitem id="hospital_femal_details_id" name="Female Patient" sequence='20' parent="hospital_patient_id"
+              action="hospital_action_female_id"/>
+
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+om_hospital.access_appointment_pharmacy,access_appointment_pharmacy,om_hospital.model_appointment_pharmacy,base.group_user,1,1,1,1
+om_hospital.access_hospital_appointment,access_hospital_appointment,om_hospital.model_hospital_appointment,base.group_user,1,1,1,1
+om_hospital.access_hospital_pationt,access_hospital_pationt,om_hospital.model_hospital_pationt,base.group_user,1,1,1,1

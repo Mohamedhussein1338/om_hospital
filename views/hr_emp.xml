@@ -1,0 +1,32 @@
+<odoo>
+
+    <record id="inherit_hr_emp_view_form" model="ir.ui.view">
+        <field name="name">inherit_hr_emp_view_form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="company_phone"/>
+            </xpath>
+<!--            <button name="403" position="after">-->
+<!--                <button name="test" type="object" string="Test" class="oe_highlight"/>-->
+
+<!--            </button>-->
+        </field>
+    </record>
+
+
+    <record id="inherit_hr_emp_view_tree" model="ir.ui.view">
+        <field name="name">inherit_hr_emp_view_tree</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="company_phone"/>
+            </xpath>
+
+
+        </field>
+    </record>
+
+</odoo>
